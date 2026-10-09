@@ -1,0 +1,30 @@
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        num_islands = 0
+        gridh = len(grid)-1
+        gridl = len(grid[0])-1
+        def isAllowed(i,j):
+            return not (i>gridh or i<0 or j<0 or j>gridl)
+
+        def buildIsland(i,j):
+            nonlocal num_islands
+            if not isAllowed(i,j):
+                return
+            item = grid[i][j]
+            if item == "0":
+                return
+            else:
+                grid[i][j] = "0"
+                buildIsland(i,j+1)
+                buildIsland(i-1,j)
+                buildIsland(i+1,j)
+                buildIsland(i,j-1)
+
+        rownum = 0
+        for row in grid:
+            for j in range(len(row)):
+                if grid[rownum][j] == "1":
+                    buildIsland(rownum,j)
+                    num_islands+=1
+            rownum+=1
+        return num_islands
